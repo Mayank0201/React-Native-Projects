@@ -1,0 +1,65 @@
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { CATEGORIES, MEALS } from "../data/dummy-data";
+import Meal from "../models/meal";
+import { useLayoutEffect } from "react";
+import MealItem from "../components/MealItem";
+//import { useRoute } from "@react-navigation/native" can use this hook for an alternative for this prop
+//for some component that isnt registered as a screen
+
+function MealsOverview({ route, navigation }: any) {
+  //check docs to know about navigation and route props
+  const id = route.params.categoryId;
+  const displayedMeals = MEALS.filter((mealItem) => {
+    return mealItem.categoryIds.indexOf(id) >= 0; //means we have a match
+    //if it doesnt find a match , it will return -1
+  });
+
+  const categoryTitle = CATEGORIES.find((category) => category.id === id);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: `Meals of Category ${id}`,
+    });
+    /// ❌ Error: "Cannot update a component while rendering another component"
+    // Happens when we call navigation.setOptions (or any state update) directly inside render.
+    // React doesn't allow state changes during rendering.
+
+    // ✅ Fix: Use useLayoutEffect instead of useEffect or direct calls.
+    // useLayoutEffect runs before the screen is painted, ensuring navigation options update safely. */
+  }, [navigation, id]);
+
+  function renderMealItem({ item }: { item: Meal }) {
+    const mealItemProps = {
+      id: item.id,
+      title: item.title,
+      imageUrl: item.imageUrl,
+      duration: item.duration,
+      complexity: item.complexity,
+      affordability: item.affordability,
+    };
+
+    return (
+      //<MealItem title={item.title} imageUrl={item.imageUrl} duration={item.duration} complexity={item.complexity} affordability={item.affordability}/>
+      <MealItem {...mealItemProps} /> //props will be assigned
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={displayedMeals}
+        keyExtractor={(item) => item.id}
+        renderItem={renderMealItem}
+      />
+    </View>
+  );
+}
+
+export default MealsOverview;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+});

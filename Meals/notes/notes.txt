@@ -1,0 +1,186 @@
+// MealItem component with destructuring
+function MealItem({ title }: { title: string }) {
+  return <Text>{title}</Text>; 
+}
+
+// Without destructuring:
+function MealItem(props: { title: string }) {
+  return <Text>{props.title}</Text>; 
+}
+
+// Usage example:
+<MealItem title={item.title} /> 
+
+// Key Notes:
+// 1. Destructuring is a shorthand for accessing prop values.
+// 2. Makes code cleaner and easier to read.
+// 3. Can destructure multiple props, e.g., {title, duration, complexity}.
+
+
+to add react native navigation package , use 
+npm install @react-navigation/native @react-navigation/native-stack
+
+and then
+
+npx expo install react-native-screens react-native-safe-area-context
+
+for stack do this
+npm install @react-navigation/native-stack
+
+
+🧠 useLayoutEffect vs useEffect:
+- useEffect runs *after* the component has rendered.
+- useLayoutEffect runs *before* the component is painted to the screen.
+- For navigation.setOptions or layout-related updates, always use useLayoutEffect.
+- Avoid updating navigation or state directly in the component body — it causes the
+  "Cannot update a component while rendering another component" error.
+
+
+📌 React Navigation Drawer – Notes
+✅ 1. Installation (npm & npx)
+📦 Using npm
+npm install @react-navigation/drawer
+npm install react-native-gesture-handler react-native-reanimated
+npm install react-native-screens react-native-safe-area-context
+
+📦 Using npx (Expo-managed project)
+npx expo install @react-navigation/drawer
+npx expo install react-native-gesture-handler react-native-reanimated
+npx expo install react-native-screens react-native-safe-area-context
+
+
+Expo NOTE:
+Expo automatically installs compatible versions, so always use npx expo install.
+
+✅ 2. createDrawerNavigator
+✨ Import
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+✨ Usage
+const Drawer = createDrawerNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator>
+        <Drawer.Screen name="Home" component={HomeScreen} />
+        <Drawer.Screen name="Meals" component={MealsScreen} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
+
+Key Points
+
+Creates a side sliding navigation menu.
+
+Works like Stack Navigator but with Drawer UI.
+
+You define screens inside <Drawer.Navigator>.
+
+Each screen becomes a drawer menu item.
+
+✅ 3. toggleDrawer()
+✨ What is it?
+
+A function provided by React Navigation.
+
+Used to open or close the drawer programmatically.
+
+✨ How to use
+navigation.toggleDrawer();
+
+✨ Example – Button to open drawer
+function HomeScreen({ navigation }) {
+  return (
+    <Button 
+      title="Open Drawer" 
+      onPress={() => navigation.toggleDrawer()} 
+    />
+  );
+}
+
+React native Bottom Tab Notes
+
+✅ 1. Installation (npm & npx)
+📦 Using npm
+npm install @react-navigation/bottom-tabs
+npm install react-native-screens react-native-safe-area-context
+
+📦 Using npx (Expo-managed project)
+npx expo install @react-navigation/bottom-tabs
+npx expo install react-native-screens react-native-safe-area-context
+
+
+Expo NOTE:
+expo install auto-installs compatible versions — always preferred for Expo apps.
+
+✅ 2. createBottomTabNavigator
+✨ Import
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+✨ Usage
+const Tab = createBottomTabNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Meals" component={MealsScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
+✨ Key Points
+
+Creates a bar at the bottom of the screen.
+
+Each screen inside <Tab.Navigator> becomes a tab item.
+
+Tabs automatically handle:
+
+Screen switching animations
+
+Safe area padding
+
+Label + icon display (if configured)
+
+✅ 3. Adding Icons to Bottom Tabs
+With @expo/vector-icons
+import { Ionicons } from "@expo/vector-icons";
+
+<Tab.Screen 
+  name="Home" 
+  component={HomeScreen}
+  options={{
+    tabBarIcon: ({ color, size }) => (
+      <Ionicons name="home" color={color} size={size} />
+    ),
+  }}
+/>
+
+Props passed to tabBarIcon
+
+color → active/inactive tint color
+
+size → auto-adjusted size by tab bar
+
+focused → boolean (true when selected)
+
+❗ No toggle function (like Drawer)
+
+Bottom Tabs are always visible by default.
+But you can hide them:
+
+Hide tab bar for a specific screen
+options={{ tabBarStyle: { display: 'none' } }}
+
+✅ 4. Navigation Between Tabs
+Using navigation object:
+navigation.navigate("Home");
+
+or using tab press:
+
+Tabs handle switching automatically.
