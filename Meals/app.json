@@ -22,7 +22,8 @@
         "backgroundColor": "#24180f"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.Meals"
     },
     "web": {
       "favicon": "./assets/favicon.png"

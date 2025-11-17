@@ -1,3 +1,5 @@
+import "react-native-gesture-handler";
+import "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
 import { Button, StyleSheet, Text, View } from "react-native";
 import CategoryScreen from "./screens/CategoriesScreen";
@@ -8,20 +10,37 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 //such behaviour but if any issues with native-stack , we can easily fall back to @react-navigation/stack
 import MealsOverview from "./screens/MealsOverview";
 import MealDetailScreen from "./screens/MealDetailScreen";
-//import { createDrawerNavigator } from "@react-navigation/drawer";
-//import FavoritesScreen from "./screens/FavoritesScreen";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import FavoritesScreen from "./screens/FavoritesScreen";
 
 const Stack = createNativeStackNavigator();
-//const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator();
 
-/* function DrawerNavigator() {
+// ---------------------------
+// Drawer Navigator
+// ---------------------------
+function DrawerNavigator() {
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Categories" component={CategoryScreen} />
-      <Drawer.Screen name="Favorites" component={FavoritesScreen} />
+    <Drawer.Navigator
+      screenOptions={{
+        headerShown: true, // show header so hamburger menu appears
+        drawerPosition: "left",
+        drawerType: "front",
+      }}
+    >
+      <Drawer.Screen
+        name="Categories"
+        component={CategoryScreen}
+        options={{ title: "All Categories" }}
+      />
+      <Drawer.Screen
+        name="Favorites"
+        component={FavoritesScreen}
+        options={{ title: "Your Favorites" }}
+      />
     </Drawer.Navigator>
   );
-} */
+}
 
 export default function App() {
   return (
@@ -31,15 +50,20 @@ export default function App() {
         {/*Adds a safe pad between top of screen */}
         {/*Also Stack navigator has its own bg all that , so basic white for name which is like a title and component which is our tiles */}
         <Stack.Navigator
-          initialRouteName="Meal Categories"
+          initialRouteName="Drawer"
           screenOptions={{
-            headerStyle: { backgroundColor: "#ccc" },
+            headerStyle: { backgroundColor: "#da9c9cff" },
             headerTintColor: "white",
             contentStyle: { backgroundColor: "#ffaaaa" },
           }}
         >
           {/* we can do initial route or we can just do the stack part And also for the options , the parameter is options={{}} for Stack.screen and screenOptions inside Navigator does it for all the screens inside it */}
-          {/* <Stack.Screen name="Drawer" component={DrawerNavigator} /> */}
+          {/* FIXED: Drawer is first screen, headerShown handled inside Drawer */}
+          <Stack.Screen
+            name="Drawer"
+            component={DrawerNavigator}
+            options={{ headerShown: false }} // hide stack header so drawer header shows
+          />
 
           <Stack.Screen
             name="Meal Categories"
@@ -78,7 +102,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#eeb2b2ff",
     alignItems: "center",
     justifyContent: "center",
   },

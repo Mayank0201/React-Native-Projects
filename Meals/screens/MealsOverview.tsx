@@ -18,7 +18,7 @@ function MealsOverview({ route, navigation }: any) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: `Meals of Category ${id}`,
+      title: categoryTitle ? categoryTitle.title : "Meals", // ✅ FIXED
     });
     /// ❌ Error: "Cannot update a component while rendering another component"
     // Happens when we call navigation.setOptions (or any state update) directly inside render.

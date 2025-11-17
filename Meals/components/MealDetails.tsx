@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
   },
   detailItem: {
     marginHorizontal: 8,
-    fontSize: 16,
+    fontSize: 12,
   },
 });

@@ -184,3 +184,42 @@ navigation.navigate("Home");
 or using tab press:
 
 Tabs handle switching automatically.
+
+OK NOTE IMP
+# 1. Remove node_modules and lock files
+rm -rf node_modules package-lock.json yarn.lock
+
+# 2. Clear npm cache just in case
+npm cache clean --force
+
+# 3. Install dependencies fresh
+npm install
+
+# 4. Install the correct version of reanimated for Expo
+npx expo install react-native-reanimated@~4.1.1
+
+5. create babel.config.ts file normally and put this code
+module.exports = function(api) {
+  api.cache(true);
+  return {
+    presets: ['babel-preset-expo'],
+    plugins: [
+      // must be last
+      'react-native-reanimated/plugin',
+    ],
+  };
+};
+
+also import this at top for app.tsx
+import 'react-native-gesture-handler';
+import 'react-native-reanimated';
+
+
+# 5. Start Expo with cleared cache
+npx expo start -c
+IN BASH
+
+
+
+
+CHECK FOR THE OTHER NAVIGATORS IN DOCS TOO
