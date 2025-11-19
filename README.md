@@ -12,7 +12,9 @@ Each project is inside its own folder and can be opened and run individually.
 Example:
 
 cd NumberGuesser
+
 npm install
+
 npx expo start
 
 You can run the app on a device using Expo Go or on an emulator.
