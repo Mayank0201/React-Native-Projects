@@ -2,7 +2,8 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import { CATEGORIES, MEALS } from "../data/dummy-data";
 import Meal from "../models/meal";
 import { useLayoutEffect } from "react";
-import MealItem from "../components/MealItem";
+import MealItem from "../components/MealsList/MealItem";
+import MealsList from "../components/MealsList/MealsList";
 //import { useRoute } from "@react-navigation/native" can use this hook for an alternative for this prop
 //for some component that isnt registered as a screen
 
@@ -28,38 +29,7 @@ function MealsOverview({ route, navigation }: any) {
     // useLayoutEffect runs before the screen is painted, ensuring navigation options update safely. */
   }, [navigation, id]);
 
-  function renderMealItem({ item }: { item: Meal }) {
-    const mealItemProps = {
-      id: item.id,
-      title: item.title,
-      imageUrl: item.imageUrl,
-      duration: item.duration,
-      complexity: item.complexity,
-      affordability: item.affordability,
-    };
-
-    return (
-      //<MealItem title={item.title} imageUrl={item.imageUrl} duration={item.duration} complexity={item.complexity} affordability={item.affordability}/>
-      <MealItem {...mealItemProps} /> //props will be assigned
-    );
-  }
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={displayedMeals}
-        keyExtractor={(item) => item.id}
-        renderItem={renderMealItem}
-      />
-    </View>
-  );
+  return <MealsList items={displayedMeals} />;
 }
 
 export default MealsOverview;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-});

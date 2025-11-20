@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import CategoryScreen from "./screens/CategoriesScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -12,6 +12,9 @@ import MealsOverview from "./screens/MealsOverview";
 import MealDetailScreen from "./screens/MealDetailScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import FavoritesScreen from "./screens/FavoritesScreen";
+//import FavoritesContextProvider, {FavoritesContext,} from "./store/context/favorites-context";
+import { Provider } from "react-redux";
+import { store } from "./store/redux/store";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -46,55 +49,59 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        {/*Adds a safe pad between top of screen */}
-        {/*Also Stack navigator has its own bg all that , so basic white for name which is like a title and component which is our tiles */}
-        <Stack.Navigator
-          initialRouteName="Drawer"
-          screenOptions={{
-            headerStyle: { backgroundColor: "#da9c9cff" },
-            headerTintColor: "white",
-            contentStyle: { backgroundColor: "#ffaaaa" },
-          }}
-        >
-          {/* we can do initial route or we can just do the stack part And also for the options , the parameter is options={{}} for Stack.screen and screenOptions inside Navigator does it for all the screens inside it */}
-          {/* FIXED: Drawer is first screen, headerShown handled inside Drawer */}
-          <Stack.Screen
-            name="Drawer"
-            component={DrawerNavigator}
-            options={{ headerShown: false }} // hide stack header so drawer header shows
-          />
-
-          <Stack.Screen
-            name="Meal Categories"
-            component={CategoryScreen}
-            options={{
-              title: "All Categories",
+      {/* <FavoritesContextProvider> */}
+      <Provider store={store}>
+        <NavigationContainer>
+          {/*Adds a safe pad between top of screen */}
+          {/*Also Stack navigator has its own bg all that , so basic white for name which is like a title and component which is our tiles */}
+          <Stack.Navigator
+            initialRouteName="Drawer"
+            screenOptions={{
+              headerStyle: { backgroundColor: "#da9c9cff" },
+              headerTintColor: "white",
+              contentStyle: { backgroundColor: "#ffaaaa" },
             }}
-          />
-          {/* check docs for all this and also {{}} means it takes an obj*/}
-          <Stack.Screen
-            name="Meals Overview"
-            component={MealsOverview}
-            /* options={({route,navigation})=>{
+          >
+            {/* we can do initial route or we can just do the stack part And also for the options , the parameter is options={{}} for Stack.screen and screenOptions inside Navigator does it for all the screens inside it */}
+            {/* FIXED: Drawer is first screen, headerShown handled inside Drawer */}
+            <Stack.Screen
+              name="Drawer"
+              component={DrawerNavigator}
+              options={{ headerShown: false }} // hide stack header so drawer header shows
+            />
+
+            <Stack.Screen
+              name="Meal Categories"
+              component={CategoryScreen}
+              options={{
+                title: "All Categories",
+              }}
+            />
+            {/* check docs for all this and also {{}} means it takes an obj*/}
+            <Stack.Screen
+              name="Meals Overview"
+              component={MealsOverview}
+              /* options={({route,navigation})=>{
           const categoryId = (route.params as any)?.categoryId; // ✅ cast to any 
           return {
             title:categoryId
           };
         }} one method of doing this ; another method is to use navigation in the main mealsoverviewscreen*/
-          />
-          <Stack.Screen
-            name="Meal Detail"
-            component={MealDetailScreen}
-            /* options={{
+            />
+            <Stack.Screen
+              name="Meal Detail"
+              component={MealDetailScreen}
+              /* options={{
               //headerRight and the other header take a component only
               headerRight: () => {
                 return <Button title="Press me"/>;
               },
             }} */
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+        {/* </FavoritesContextProvider> */}
+      </Provider>
     </>
   );
 }

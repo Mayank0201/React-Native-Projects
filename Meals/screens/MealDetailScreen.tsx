@@ -1,33 +1,59 @@
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { MEALS } from "../data/dummy-data";
 import MealDetails from "../components/MealDetails";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import IconButton from "../components/IconButton";
+//import { FavoritesContext } from "../store/context/favorites-context";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, removeFavorite } from "../store/redux/favorites";
 
 function MealDetailScreen({ route, navigation }: any) {
+  //const favoriteMealsContext = useContext(FavoritesContext);
+  //standard react
+
+  const FavoriteMealIds = useSelector((state: any) => state.favoriteMeals.ids);
+
   const mealId = route.params.mealId;
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
-  function headerButtonPressHandler() {
-    console.log("Pressed");
+  // always recompute from context — no let variable
+  //const mealIsFavorite = favoriteMealsContext.ids.includes(mealId);
+
+  const dispatch = useDispatch();
+
+  function favoriteHandler() {
+    // get fresh value directly from context
+    //const currentlyFavorite = favoriteMealsContext.ids.includes(mealId);
+    const currentlyFavorite = FavoriteMealIds.includes(mealId);
+
+    if (currentlyFavorite) {
+      //favoriteMealsContext.removeFavorite(mealId);
+      dispatch(removeFavorite({ id: mealId }));
+    } else {
+      //favoriteMealsContext.addFavorite(mealId);
+      dispatch(addFavorite({ id: mealId }));
+    }
   }
+
   // useLayoutEffect is used to update navigation options synchronously before the screen is painted
   // unlike useEffect, it prevents flickering when setting header titles or buttons
   // This ensures the UI updates immediately with the correct header or layout, avoiding visual glitches.
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
+        //const isFav = favoriteMealsContext.ids.includes(mealId);
+        const isFav = FavoriteMealIds.includes(mealId);
         return (
           <IconButton
-            icon="star"
+            icon={isFav ? "star" : "star-outline"}
             color="white"
-            onPress={headerButtonPressHandler}
+            onPress={favoriteHandler}
           />
         );
       },
     });
-  });
+  }, [navigation, FavoriteMealIds, mealId]);
 
   return (
     <ScrollView style={styles.root}>
@@ -96,20 +122,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     marginBottom: 8,
-    textAlign: "center", // center the header
+    textAlign: "center",
   },
 
   card: {
-    backgroundColor: "rgba(255,255,255,0.8)", // slightly transparent to show background
+    backgroundColor: "rgba(255,255,255,0.8)",
     borderRadius: 8,
     padding: 12,
     marginVertical: 6,
-    alignItems: "center", // center the text inside the card
+    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5, // Android shadow
+    elevation: 5,
   },
 
   cardText: {

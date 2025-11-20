@@ -1,6 +1,6 @@
 import { View, Pressable, Text, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native"; //used for any component while route and navigation are only for screen comps
-import MealDetails from "./MealDetails";
+import MealDetails from "../MealDetails";
 
 // Destructuring props allows us to directly access values like 'title'
 // instead of writing props.title each time

@@ -2,7 +2,7 @@ import { CATEGORIES } from "../data/dummy-data";
 import { FlatList } from "react-native";
 import Category from "../models/category";
 import CategoryGridTile from "../components/CategoryGridTile";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+//import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 // FlatList's renderItem receives an object with { item, index, separators },
 // not just the item directly. We destructure { item } to get the Category object.
